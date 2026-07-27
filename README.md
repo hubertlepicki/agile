@@ -43,21 +43,18 @@ Tests in chunks, code in chunks — never the whole feature at once.
 
 You ask: *"users should get an email when their order ships."*
 
-<table>
-<tr><th align="left">Without</th><th align="left">With <code>agile</code></th></tr>
-<tr valign="top"><td>
+**Without it,** the agent writes a `NotificationService`, an `EmailProvider` interface with one implementation, a retry policy, a template registry, and a `notifications.yaml`. No tests. It asked nothing.
 
-Writes `NotificationService`, an `EmailProvider` interface with one implementation, a retry policy, a template registry, and a `notifications.yaml`. No tests. Asks nothing.
-
-</td><td>
+**With `agile`,** it asks first:
 
 > Before I start — when an order ships, who gets told, and what does it say? Two behaviors I think you mean:
+>
 > 1. Shipping an order sends the buyer one email with the tracking link.
 > 2. Shipping an already-shipped order sends nothing.
 >
 > Right? Anything about failed sends?
 
-Then, after you say yes:
+Then, once you say yes:
 
 ```
 RED: nothing proves shipping an order emails the buyer. Writing that test.
@@ -65,9 +62,6 @@ RED: nothing proves shipping an order emails the buyer. Writing that test.
 GREEN: buyer emailed on ship. Passing.
 REFACTOR: pulled the tracking link out of the template; named it.
 ```
-
-</td></tr>
-</table>
 
 ## Install
 
