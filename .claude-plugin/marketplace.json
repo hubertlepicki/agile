@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agile",
+  "description": "Agile/XP discipline for AI agents. Understand first, test-first always, small steps, plain words.",
+  "owner": {
+    "name": "Hubert Łępicki",
+    "url": "https://github.com/hubertlepicki"
+  },
+  "plugins": [
+    {
+      "name": "agile",
+      "description": "Outside-in TDD in small steps, simple design, clean code, plain domain language.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "agile",
+  "version": "0.1.0",
+  "description": "Disciplined agile/XP mode. Talk before you code, then drive it through outside-in TDD in small steps, refactor to simple design, and speak plain domain language.",
+  "contextFileName": "AGENTS.md"
+}

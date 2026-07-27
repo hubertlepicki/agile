@@ -1,0 +1,30 @@
+{
+  "name": "agile",
+  "version": "0.1.0",
+  "description": "Disciplined agile/XP mode. Talk before you code, then drive it through outside-in TDD in small steps, refactor to simple design, and speak plain domain language.",
+  "author": {
+    "name": "Hubert Łępicki",
+    "url": "https://github.com/hubertlepicki"
+  },
+  "homepage": "https://github.com/hubertlepicki/agile",
+  "repository": "https://github.com/hubertlepicki/agile",
+  "license": "MIT",
+  "keywords": ["tdd", "agile", "xp", "refactoring", "clean-code"],
+  "skills": "./skills/",
+  "hooks": "./hooks/claude-codex-hooks.json",
+  "interface": {
+    "displayName": "Agile",
+    "shortDescription": "Agile/XP discipline: understand first, test-first always",
+    "longDescription": "Treats a request as a conversation before code, then drives the change outside-in: one failing acceptance test, small red/green/refactor cycles, refactor to simple design, plain domain language throughout.",
+    "developerName": "Hubert Łępicki",
+    "category": "Productivity",
+    "capabilities": ["Instructions", "Lifecycle hooks"],
+    "websiteURL": "https://github.com/hubertlepicki/agile",
+    "defaultPrompt": [
+      "Let's agree on the behaviors for this feature before writing code.",
+      "Drive this change test-first, outside-in.",
+      "Refactor this to simple design without changing behavior."
+    ],
+    "brandColor": "#2E7D32"
+  }
+}
