@@ -142,11 +142,19 @@ That's the point. The expensive part isn't typing code, it's building the wrong 
 They're the spec. You were going to describe the behavior anyway — this way the description runs.
 
 **Can I pair it with something like [ponytail](https://github.com/DietrichGebert/ponytail)?**
-Yes. Ponytail shrinks what gets built; `agile` governs how it gets built and talked about. They overlap on "do less" and agree there.
+Yes — and `agile` borrows its plumbing, see [Credits](#credits). Ponytail shrinks what gets built; `agile` governs how it gets built and talked about. They overlap on "do less" and agree there.
 
 **Why no `/agile-plan`, `/agile-refactor`, …?**
 The loop is always on, and refactoring already runs on every green. A command would just be a second way to ask for what's already happening.
 
+## Credits
+
+The plugin scaffolding here stands on [ponytail](https://github.com/DietrichGebert/ponytail) by [Dietrich Gebert](https://github.com/DietrichGebert) (MIT). It worked out how to keep a ruleset alive in an agent across Claude Code, Codex, and instruction-only hosts, and `agile` reuses that machinery: the lifecycle hook map, the per-host output shapes, and the stdin read with its never-hang fallback — including the Windows PowerShell edge case that is only obvious once it has bitten you.
+
+Borrowed with thanks, and with its copyright notice kept intact in [LICENSE](LICENSE). The ruleset itself — [`GOAL.md`](GOAL.md), [`SKILL.md`](skills/agile/SKILL.md), [`AGENTS.md`](AGENTS.md) — is our own; ponytail governs *how much* gets built, `agile` governs *how* it gets built.
+
+The ideas in the ruleset aren't ours either, and predate all of this: Kent Beck (TDD, the four rules of simple design), Freeman & Pryce (outside-in / *Growing Object-Oriented Software, Guided by Tests*), Ron Jeffries (a story is a promise for a conversation), Eric Evans (ubiquitous language), the Poppendiecks (lean, work not done), and the Agile Manifesto authors.
+
 ## License
 
-[MIT](LICENSE).
+[MIT](LICENSE) — same licence as ponytail, whose copyright notice it carries.

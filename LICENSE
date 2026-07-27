@@ -1,6 +1,7 @@
 MIT License
 
 Copyright (c) 2026 Hubert Łępicki
+Copyright (c) 2026 DietrichGebert (parts of the hook scaffolding, noted below)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +20,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+The second copyright above covers the hook scaffolding derived from ponytail
+(https://github.com/DietrichGebert/ponytail), which is MIT licensed under the
+same terms:
+
+  - hooks/claude-codex-hooks.json   lifecycle hook map, Windows command guard
+  - hooks/agile-core.js             host detection, hook output shapes
+  - hooks/agile-prompt.js           stdin read with never-hang fallback
+
+The ruleset (GOAL.md, skills/agile/SKILL.md, AGENTS.md) is original work.

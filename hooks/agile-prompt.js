@@ -2,6 +2,9 @@
 // UserPromptSubmit — re-inject the ruleset every turn. This is what keeps a
 // long session from drifting back to code-first, big-bang habits. Also the
 // place where "stop agile" / "/agile off" is picked up.
+//
+// The stdin read and its never-hang fallback are derived from ponytail
+// (https://github.com/DietrichGebert/ponytail), MIT © 2026 DietrichGebert.
 
 const {
   DEACTIVATE,

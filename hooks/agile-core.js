@@ -3,6 +3,9 @@
 // One always-on mode. The flag file marks the exception: present = the user
 // turned agile off for this session. Absent = active, which is the default and
 // the common case.
+//
+// Host detection and the hook output shapes below are derived from ponytail
+// (https://github.com/DietrichGebert/ponytail), MIT © 2026 DietrichGebert.
 
 const fs = require('fs');
 const os = require('os');
