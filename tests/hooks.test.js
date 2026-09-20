@@ -19,7 +19,7 @@ const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'agile-hooks-'));
 const home = path.join(temp, 'home');
 fs.mkdirSync(home, { recursive: true });
 
-const { DEACTIVATE, REACTIVATE } = require('../hooks/agile-core');
+const { DEACTIVATE, REACTIVATE, getInstructions } = require('../hooks/agile-core');
 
 function run(script, env, input = '') {
   return spawnSync(process.execPath, [path.join(root, 'hooks', script)], {
@@ -191,7 +191,7 @@ test('SubagentStart on Claude wraps the ruleset so the host does not drop it', (
   assert.equal(result.status, 0, result.stderr);
   const output = JSON.parse(result.stdout);
   assert.equal(output.hookSpecificOutput.hookEventName, 'SubagentStart');
-  assert.match(output.hookSpecificOutput.additionalContext, /AGILE MODE ACTIVE/);
+  assert.equal(output.hookSpecificOutput.additionalContext, getInstructions());
 });
 
 test('SubagentStart on Codex includes the badge and hookSpecificOutput', () => {
@@ -203,7 +203,18 @@ test('SubagentStart on Codex includes the badge and hookSpecificOutput', () => {
   assert.equal(output.systemMessage, 'AGILE');
   assert.equal(output.additionalContext, undefined);
   assert.equal(output.hookSpecificOutput.hookEventName, 'SubagentStart');
-  assert.match(output.hookSpecificOutput.additionalContext, /AGILE MODE ACTIVE/);
+  assert.equal(output.hookSpecificOutput.additionalContext, getInstructions());
+});
+
+test('compaction restores the complete active ruleset on Claude and Codex', () => {
+  const pluginData = path.join(temp, 'codex-compact');
+  const payload = JSON.stringify({ source: 'compact' });
+  const claude = run('agile-activate.js', claudeEnv, payload);
+  assert.equal(claude.status, 0, claude.stderr);
+  assert.equal(claude.stdout, getInstructions());
+  const codex = run('agile-activate.js', { ...claudeEnv, PLUGIN_DATA: pluginData }, payload);
+  assert.equal(codex.status, 0, codex.stderr);
+  assert.equal(JSON.parse(codex.stdout).hookSpecificOutput.additionalContext, getInstructions());
 });
 
 test('SubagentStart stays silent when agile is off', () => {

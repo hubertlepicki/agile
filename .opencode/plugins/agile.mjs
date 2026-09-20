@@ -46,8 +46,6 @@ export default async () => {
   // A new OpenCode process is a new session: start on, like Claude SessionStart.
   activate();
 
-  const skillsDir = path.resolve(__dirname, '../../skills');
-
   return {
     config: async (config) => {
       if (!config.command) config.command = {};
@@ -59,12 +57,6 @@ export default async () => {
           if (parsed) config.command[name] = parsed;
         }
       } catch (e) {}
-
-      config.skills = config.skills || {};
-      config.skills.paths = config.skills.paths || [];
-      if (!config.skills.paths.includes(skillsDir)) {
-        config.skills.paths.push(skillsDir);
-      }
     },
 
     'experimental.chat.system.transform': async (_input, output) => {

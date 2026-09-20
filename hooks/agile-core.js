@@ -45,8 +45,7 @@ function activate() {
   try { fs.unlinkSync(flagPath); } catch (e) {}
 }
 
-// The skill file is the ruleset. AGENTS.md carries the same rules compact, so
-// it is the fallback rather than a third copy that could drift.
+// AGENTS.md is generated from the skill body and remains a standalone fallback.
 function getInstructions() {
   for (const file of [SKILL_PATH, AGENTS_PATH]) {
     try {

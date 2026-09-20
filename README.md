@@ -126,7 +126,7 @@ Run from a checkout instead (the plugin reuses `hooks/` and `skills/`):
 { "plugin": ["./.opencode/plugins/agile.mjs"] }
 ```
 
-Injects the ruleset every turn; adds `/agile` (and `/agile off`). OpenCode also auto-loads this repo's `AGENTS.md`, so the rules hold even without the plugin. The plugin is what persists off/on across turns.
+Supplies the compact ruleset in each model request's system prompt; adds `/agile` (and `/agile off`). It does not register a second copy as a discoverable skill. OpenCode also auto-loads this repo's `AGENTS.md`, so working inside this checkout loads both copies; installing the npm plugin in other projects does not itself load this repo's `AGENTS.md`. The plugin is what persists off/on across turns.
 
 The `./` path resolves against your project's `opencode.json`; to share one checkout across projects, point it at the absolute path of the `.mjs` instead (it finds its `hooks/` and `skills/` relative to its own file).
 
@@ -144,7 +144,7 @@ Long sessions drift. Agents slide back to code-first the moment the ruleset fall
 |---|---|---|
 | **Claude Code** | `SessionStart` (also after compaction/clear) + `UserPromptSubmit` + `SubagentStart` hooks | **Full** — the full ruleset returns after every compaction or clear, a short reminder holds the line every turn in between, and every subagent gets the full ruleset |
 | **Codex** | the same three hooks, same file, same event names | **Full** — identical to Claude Code |
-| **OpenCode** | `experimental.chat.system.transform` on every turn | **Full** — the ruleset is re-injected on *every turn* |
+| **OpenCode** | `experimental.chat.system.transform` on every model request | **Full** — a complete compact ruleset in each fresh system prompt, without accumulating copies through this hook |
 | **Grok Build** | plugin skill + auto-invoke from its description | **Partial** — skill-tier; Grok hooks cannot inject instructions |
 | **Antigravity** | `AGENTS.md` as always-on context | **Partial** — instruction-tier only |
 
@@ -158,15 +158,24 @@ Say **"stop agile"** (or "normal mode", or `/agile off`). It stays off for the r
 
 ## The ruleset
 
-One set of rules, three renderings, all kept in sync:
+One maintained runtime ruleset, a generated standalone copy, and a rationale document:
 
 | File | Role |
 |---|---|
-| [`GOAL.md`](GOAL.md) | source of truth — the principles and why they're there |
-| [`skills/agile/SKILL.md`](skills/agile/SKILL.md) | the full ruleset the agent loads |
-| [`AGENTS.md`](AGENTS.md) | compact copy for instruction-tier hosts |
+| [`GOAL.md`](GOAL.md) | principles, rationale, and extended examples for maintainers |
+| [`skills/agile/SKILL.md`](skills/agile/SKILL.md) | concise, complete runtime rules; edit here |
+| [`AGENTS.md`](AGENTS.md) | generated skill body for instruction-tier hosts |
 
-Change one, change all three.
+After changing the skill, run `npm run generate:agents` and commit both files.
+Update `GOAL.md` when the principles change. Generated instructions ship in the
+repository and package; users do not need to run a generator. Tests reject an
+out-of-date copy and enforce size budgets for the rules and discovery description.
+
+The compact rules keep all required behavior together; agents do not need extra
+file reads to recover required instructions. Claude Code and Codex retain their
+short per-prompt reminder and complete startup, compaction, and subagent context.
+Grok retains automatic skill discovery. Token savings depend on the model's
+tokenizer and prompt caching; instruction length is not total session cost.
 
 ## FAQ
 

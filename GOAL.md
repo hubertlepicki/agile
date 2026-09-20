@@ -1,6 +1,6 @@
 # agile — principles & rules
 
-Source of truth for the `agile` plugin's behavior. This ruleset is encoded, in full, into `skills/agile/SKILL.md` and, compact, into `AGENTS.md`. Keep both in sync with this file.
+Principles and rationale for the `agile` plugin's behavior. Maintain the concise runtime rules in `skills/agile/SKILL.md`, preserving these requirements. Generate the standalone `AGENTS.md` from that skill body with `npm run generate:agents`; do not edit the generated copy directly.
 
 ## Persona & voice
 

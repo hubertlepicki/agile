@@ -99,15 +99,30 @@ test('plugin module exports only the plugin function', () => {
   assert.equal(fns[0], pluginModule.default);
 });
 
-test('config registers /agile and the skills directory', async () => {
+test('config registers /agile without advertising a duplicate skill', async () => {
   const hooks = await loadPlugin({});
   const config = {};
   await hooks.config(config);
   assert.ok(config.command && config.command.agile, 'must register the agile command');
   assert.match(config.command.agile.description, /agile/i);
   assert.match(config.command.agile.template, /off/i);
-  const skillsDir = path.resolve(__dirname, '..', 'skills');
-  assert.ok(config.skills.paths.includes(skillsDir));
+  assert.equal(config.skills, undefined);
+});
+
+test('config preserves skills registered by the user', async () => {
+  const hooks = await loadPlugin({});
+  const config = { skills: { paths: ['/user/skills'] } };
+  await hooks.config(config);
+  assert.deepEqual(config.skills, { paths: ['/user/skills'] });
+});
+
+test('each fresh model request receives one complete ruleset', async () => {
+  const hooks = await loadPlugin({});
+  const { getInstructions } = require('../hooks/agile-core');
+  for (let request = 0; request < 3; request++) {
+    const system = await transform(hooks);
+    assert.deepEqual(system, [getInstructions()]);
+  }
 });
 
 test('parseCommandFile reads frontmatter description + body, LF and CRLF', () => {

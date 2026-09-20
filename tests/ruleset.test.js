@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-// GOAL.md, SKILL.md, and AGENTS.md are three renderings of one ruleset.
-// SKILL.md and AGENTS.md are what hosts load; they, and the per-turn reminder
-// in hooks/agile-core.js, must also name the off phrases.
+// Runtime instructions are maintained in the skill and generated into AGENTS.md.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -9,6 +7,22 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
+
+test('standalone instructions exactly match the maintained skill body', () => {
+  const skill = fs.readFileSync(path.join(root, 'skills/agile/SKILL.md'), 'utf8');
+  const body = skill.replace(/^---[\s\S]*?\n---\s*/, '').trim();
+  assert.equal(fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8'), body + '\n',
+    'run npm run generate:agents after editing the skill');
+  assert.equal(require('../hooks/agile-core').getInstructions(), 'AGILE MODE ACTIVE\n\n' + body);
+});
+
+test('complete instructions and skill discovery stay within their size budgets', () => {
+  const instructions = require('../hooks/agile-core').getInstructions();
+  const skill = fs.readFileSync(path.join(root, 'skills/agile/SKILL.md'), 'utf8');
+  const frontmatter = skill.match(/^---[\s\S]*?\n---/)[0];
+  assert.ok(instructions.length <= 4200, `ruleset is ${instructions.length} characters; budget 4200`);
+  assert.ok(frontmatter.length <= 400, `frontmatter is ${frontmatter.length} characters; budget 400`);
+});
 
 const RULE_COPIES = [
   'GOAL.md',
